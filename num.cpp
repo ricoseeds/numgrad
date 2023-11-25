@@ -5,7 +5,7 @@
 #include <Eigen/Dense>
 #include <iomanip> // std::setprecision
 double k = 0.1;
-double l0 = 1.0;
+double l0 = 0.1;
 
 enum AccuracyOrder
 {
@@ -199,16 +199,16 @@ Eigen::MatrixXd hess(Eigen::Vector3d &x1, Eigen::Vector3d &x2)
 int main()
 {
     // std::cout << std::setprecision(10);
-    Eigen::Vector3d x1 = Eigen::Vector3d(1, 2, 3);
-    Eigen::Vector3d x2 = Eigen::Vector3d(2, 4, 6);
-    Eigen::VectorXd g = grad(x1, x2);
-    std::cout << "\n my grad \n"
-              << grad(x1, x2);
+    Eigen::Vector3d x1 = Eigen::Vector3d(0.11, -0.1, 0.0f);
+    Eigen::Vector3d x2 = Eigen::Vector3d(0.21, -0.11, 0.0f);
+    // Eigen::VectorXd g = grad(x1, x2);
+    // std::cout << "\n my grad \n"
+    //           << grad(x1, x2);
     // // std::cout << g.segment<3>(3).norm();
     // // std::cout << "func " << func(x1, x2);
     // std::cout << "\n g \n " << g(x1, x2);
     // // std::cout << "g" << g(x1, x2);
-    std::cout << "\n hess\n " << hess(x1, x2);
+    // std::cout << "\n hess\n " << hess(x1, x2);
     const auto f = [&](const Eigen::VectorXd &x) -> double
     {
         return func(x.segment<3>(0), x.segment<3>(3));
@@ -216,11 +216,13 @@ int main()
     Eigen::VectorXd x = Eigen::VectorXd(6);
     x.segment<3>(0) = x1.segment<3>(0);
     x.segment<3>(3) = x2.segment<3>(0);
+    std::cout << "\n input \n"
+              << x;
     Eigen::VectorXd fgrad;
     Eigen::MatrixXd fhess;
-    finite_gradient(x, f, fgrad, SECOND);
-    std::cout << "\n grad \n"
-              << fgrad;
+    // finite_gradient(x, f, fgrad, SECOND);
+    // std::cout << "\n grad \n"
+    //           << fgrad;
     finite_hessian(x, f, fhess, SECOND);
     std::cout << "\n hess \n"
               << fhess;
